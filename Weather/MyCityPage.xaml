@@ -1,0 +1,82 @@
+﻿<Page
+    x:Class="Weather.App.MyCityPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Weather.App"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+
+        <DataTemplate x:Key="GridViewTemplate">
+            <Grid x:Name="GridWeather">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="{Binding Temp}" FontSize="20" HorizontalAlignment="Right" Margin="0,5,5,0" VerticalAlignment="Top"/>
+                <Image Grid.Row="1" Source="{Binding TodayPic}" Stretch="None"  />
+                <TextBlock Grid.Row="2" Text="{Binding CityName}" FontSize="20" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom"/>
+            </Grid>
+        </DataTemplate>
+
+        <MenuFlyout x:Key="MenuFlyoutSource">
+            <MenuFlyoutItem Text="设为默认城市" Click="DefaultCity_Click" CommandParameter="{Binding CityId}" />
+            <MenuFlyoutItem Text="固定到桌面" Click="DesTopTile_Click" CommandParameter="{Binding CityId}" />
+            <MenuFlyoutItem Text="移除" Click="RemoveCity_Click" CommandParameter="{Binding CityId}" />
+        </MenuFlyout>
+    </Page.Resources>
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.Background>
+            <ImageBrush Stretch="UniformToFill" ImageSource="Images/Other/gaosi.jpg"/>
+        </Grid.Background>
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Popup x:Name="popupProgressBar" VerticalAlignment="Center" HorizontalAlignment="Center"  Width="200">
+            <ProgressBar IsIndeterminate="True" x:Name="progressBar"  Height="10" Foreground="White" Width="200"   Margin="0,200,0,0"
+Value="200" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Popup>
+        <Popup x:Name="popup"  Grid.Row="0" >
+            <Border x:Name="StatusBorder" >
+                <TextBlock x:Name="StatusBlock" Foreground="White" FontSize="20"  Margin="15, 10, 15, 10" TextWrapping="Wrap"/>
+            </Border>
+        </Popup>
+        <StackPanel Grid.Row="1" Margin="15,0,0,0">
+            <TextBlock Text="天气在线" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
+            <TextBlock Text="常用城市" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+        </StackPanel>
+        <GridView x:Name="gvCity" Margin="20,0" Grid.Row="2" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemClick="gvCity_ItemClick" IsItemClickEnabled="True" ItemsSource="{Binding MyCityPageModels}" Holding="gvCity_Holding" ItemTemplate="{StaticResource GridViewTemplate}" ItemContainerStyle="{ThemeResource MyCityPageDataItemStyle}" >
+            <ItemsControl.ItemContainerTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition/>
+                    <RepositionThemeTransition/>
+                    <AddDeleteThemeTransition/>
+                    <ReorderThemeTransition/>
+                </TransitionCollection>
+            </ItemsControl.ItemContainerTransitions>
+
+        </GridView>
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar  Opacity="0.5">
+            <AppBarButton x:Name="abbRefresh" Label="更新数据" Icon="Refresh" Click="abbRefresh_Click" />
+            <AppBarButton x:Name="abbAdd" Label="添加城市" Icon="Add" Click="abbAdd_Click" />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Uid="SettingCommandBar" x:Name="SettingCommandBar" Click="SettingCommandBar_Click" Label="设置" />
+                <AppBarButton x:Uid="AboutCommandBar" x:Name="InstructionCommandBar" Click="InstructionCommandBar_Click" Label="使用说明" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>
