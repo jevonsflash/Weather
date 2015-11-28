@@ -32,7 +32,8 @@ Value="200" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Popup>
         <Pivot  x:Name="pivot" CommonNavigationTransitionInfo.IsStaggerElement="True" >
             <Pivot.Background>
-                <ImageBrush Stretch="UniformToFill" ImageSource="{Binding WeatherType.BackgroundPic}"/>
+                <SolidColorBrush Color="LightCoral">
+                </SolidColorBrush>
             </Pivot.Background>
             <!--今日天气-->
             <PivotItem Header="今日天气"

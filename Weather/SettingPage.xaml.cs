@@ -42,11 +42,7 @@ namespace Weather.App
         public SettingPage()
         {
             this.InitializeComponent();
-
             this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-
             settingService = SettingService.GetInstance();
             userService = UserService.GetInstance();
             switchesRespose = new GetSettingSwitchesRespose();
@@ -72,34 +68,6 @@ namespace Weather.App
             get { return this.defaultViewModel; }
         }
 
-        /// <summary>
-        /// 使用在导航过程中传递的内容填充页。  在从以前的会话
-        /// 重新创建页时，也会提供任何已保存状态。
-        /// </summary>
-        /// <param name="sender">
-        /// 事件的来源; 通常为 <see cref="NavigationHelper"/>
-        /// </param>
-        /// <param name="e">事件数据，其中既提供在最初请求此页时传递给
-        /// <see cref="Frame.Navigate(Type, Object)"/> 的导航参数，又提供
-        /// 此页在以前会话期间保留的状态的
-        /// 字典。 首次访问页面时，该状态将为 null。</param>
-        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// 保留与此页关联的状态，以防挂起应用程序或
-        /// 从导航缓存中放弃此页。值必须符合
-        /// <see cref="SuspensionManager.SessionState"/> 的序列化要求。
-        /// </summary>
-        /// <param name="sender">事件的来源；通常为 <see cref="NavigationHelper"/></param>
-        ///<param name="e">提供要使用可序列化状态填充的空字典
-        ///的事件数据。</param>
-        private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
-        {
-
-        }
 
         #region NavigationHelper 注册
 
@@ -119,7 +87,6 @@ namespace Weather.App
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-
             await LoadData();
 
         }
@@ -157,40 +124,6 @@ namespace Weather.App
             LayoutRoot.DataContext = settingPage;
         }
 
-        private void NotifyUser(string strMessage)
-        {
-            StatusBorder.Background = new SolidColorBrush(Windows.UI.Colors.Green);
-
-            StatusBlock.Text = strMessage;
-
-            if (StatusBlock.Text != String.Empty)
-            {
-                popup.IsOpen = true;
-                // 创建一个DispatcherTimer实例。
-                DispatcherTimer newTimer = new DispatcherTimer();
-                // 将DispatcherTimer的Interval设为3秒。
-                newTimer.Interval = TimeSpan.FromSeconds(3);
-                // 这样一来OnTimerTick方法每秒都会被调用一次。
-                newTimer.Tick += (o, e) =>
-                {
-                    popup.IsOpen = false;
-                };
-                // 开始计时。
-                newTimer.Start();
-            }
-            else
-            {
-                popup.IsOpen = false;
-            }
-        }
-
-        private void LockScreen_Click(object sender, RoutedEventArgs e)
-        {
-            SettingPageHelper.LaunchUriAsync(SettingPageHelper.LaunchUriType.Locks);
-        }
-
-
-
 
         /// <summary>
         /// 仅在WI-FI建立后更新
@@ -200,52 +133,18 @@ namespace Weather.App
         private async void cbbIsWifiUpdate_DropDownClosed(object sender, object e)
         {
             userRespose.UserConfig.IsWifiUpdate = int.Parse(cbbIsWifiUpdate.SelectedValue.ToString());
-
-            await userService.SaveUser(userRespose);
-
-        }
-        /// <summary>
-        /// 仅更新默认城市
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void cbbIsUpdateForCity_DropDownClosed(object sender, object e)
-        {
-            userRespose.UserConfig.IsUpdateForCity = int.Parse(cbbIsUpdateForCity.SelectedValue.ToString());
-            await userService.SaveUser(userRespose);
-        }
-        /// <summary>
-        /// 仅在WI-FI建立后自动更新
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void cbbIsWifiAutoUpdate_DropDownClosed(object sender, object e)
-        {
-            userRespose.UserConfig.IsWifiAutoUpdate = int.Parse(cbbIsWifiAutoUpdate.SelectedValue.ToString());
-
             await userService.SaveUser(userRespose);
         }
 
+
         /// <summary>
-        /// 是否允许自动更新默认城市
+        /// 是否允许自动更新
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void cbbIsAutoUpdateForCity_DropDownClosed(object sender, object e)
         {
             userRespose.UserConfig.IsAutoUpdateForCity = int.Parse(cbbIsAutoUpdateForCity.SelectedValue.ToString());
-
-            await userService.SaveUser(userRespose);
-        }
-
-        /// <summary>
-        /// 是否允许自动更新所有常用城市
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void cbbIsAutoUpdateForCities_DropDownClosed(object sender, object e)
-        {
-            userRespose.UserConfig.IsAutoUpdateForCities = int.Parse(cbbIsAutoUpdateForCities.SelectedValue.ToString());
             await userService.SaveUser(userRespose);
         }
 
@@ -260,5 +159,9 @@ namespace Weather.App
             await userService.SaveUser(userRespose);
         }
 
+        private void BTNCityChoose_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(AddCityPage));
+        }
     }
 }

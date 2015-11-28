@@ -21,6 +21,7 @@ using Weather.Service.Message;
 using Weather.Utils;
 using System.Threading.Tasks;
 using Windows.Phone.UI.Input;
+using Weather.JMessbox;
 
 // “透视应用程序”模板在 http://go.microsoft.com/fwlink/?LinkID=391641 上有介绍
 
@@ -247,6 +248,22 @@ namespace Weather.App
             {
                 frame.GoBack();
                 e.Handled = true;
+            }
+            else
+            {
+                e.Handled = true;
+                JMessBox jb = new JMessBox("再按一次离开");
+                jb.Completed += (b) =>
+                {
+                    if (b)
+                    {
+                        //退出代码
+
+                        Application.Current.Exit();
+                    }
+                };
+                jb.Show();
+
             }
         }
 

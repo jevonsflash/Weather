@@ -41,12 +41,12 @@ namespace Weather.App
         private GetWeatherTypeRespose weatherTypeRespose;
         private GetSettingAutoUpdateTimeRepose settingAutoUpdateTimeRepose;
         private string cityId = null;
+        private HomePageModel homePageModel;
+
 
         public MainPage()
         {
             this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
             this.NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Required;
 
             userService = UserService.GetInstance();
@@ -57,7 +57,7 @@ namespace Weather.App
             weatherRespose = new GetWeatherRespose();
             weatherTypeRespose = new GetWeatherTypeRespose();
             settingAutoUpdateTimeRepose = new GetSettingAutoUpdateTimeRepose();
-
+            homePageModel = new HomePageModel();
             this.InitializeComponent();
         }
         /// <summary>
@@ -76,42 +76,6 @@ namespace Weather.App
         {
             get { return this.defaultViewModel; }
         }
-
-        #region 状态
-        /// <summary>
-        /// 使用在导航过程中传递的内容填充页。在从以前的会话
-        /// 重新创建页时，也会提供任何已保存状态。
-        /// </summary>
-        /// <param name="sender">
-        /// 事件的来源；通常为 <see cref="NavigationHelper"/>。
-        /// </param>
-        /// <param name="e">事件数据，其中既提供在最初请求此页时传递给
-        /// <see cref="Frame.Navigate(Type, Object)"/> 的导航参数，又提供
-        /// 此页在以前会话期间保留的状态的
-        /// 的字典。首次访问页面时，该状态将为 null。</param>
-        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
-        {
-            //通知
-            //string toastText = "明天冷空气南下，请注意保暖";
-            //ToastHelper.CreateToast(toastText);
-
-        }
-
-
-
-        /// <summary>
-        /// 保留与此页关联的状态，以防挂起应用程序或
-        /// 从导航缓存中放弃此页。值必须符合序列化
-        /// <see cref="SuspensionManager.SessionState"/> 的序列化要求。
-        /// </summary>
-        /// <param name="sender">事件的来源；通常为 <see cref="NavigationHelper"/>。</param>
-        ///<param name="e">提供要使用可序列化状态填充的空字典
-        ///的事件数据。</param>
-        private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
-        {
-            // TODO: 在此处保存页面的唯一状态。
-        }
-        #endregion
 
         #region NavigationHelper 注册
 
@@ -205,7 +169,6 @@ namespace Weather.App
             {
                 var respose = weatherRespose.result.FirstOrDefault();
 
-                ViewModel.HomePageModel homePageModel = new ViewModel.HomePageModel();
 
                 var aqi = respose.aqi;
                 var now = respose.now;
@@ -233,7 +196,7 @@ namespace Weather.App
                     DailyItem daily = new DailyItem()
                     {
                         Date = item.date,
-                        Image = weatherTypeRespose.WeatherTypes.FirstOrDefault(x => x.Code == item.cond.code_d).TomorrowPic,
+                        Image = weatherTypeRespose.WeatherTypes.FirstOrDefault(x => x.Code == item.cond.code_d).TileWidePic,
                         Tmp = item.tmp.min + "° / " + item.tmp.max + "°",
                         Txt = item.cond.txt_d
                     };
@@ -255,7 +218,7 @@ namespace Weather.App
                     hourlyList.Add(hourly);
                 }
                 homePageModel.HourlyList = hourlyList;
-
+                LayoutRoot.DataContext = null;
                 LayoutRoot.DataContext = homePageModel;
             }
             else
@@ -330,6 +293,24 @@ namespace Weather.App
             {
                 VisualStateManager.GoToState(this, "MoreHide", false);
             }
+        }
+
+        private void BTNFeature_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(FeatureWeatherPage), homePageModel);
+
+        }
+
+        private void BTNToday_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(TodayWeatherPage), homePageModel);
+
+        }
+
+        private void BTNSetting_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SettingPage), homePageModel);
+
         }
     }
 }
