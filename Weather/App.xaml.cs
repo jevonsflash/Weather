@@ -37,7 +37,7 @@ namespace Weather.App
         private GetUserRespose userRespose;
         private GetSettingAutoUpdateTimeRepose settingAutoUpdateTimeRepose;
         private SettingService settingService;
-
+        private ColorService colorService;
 
 
 
@@ -52,13 +52,14 @@ namespace Weather.App
 
             userService = UserService.GetInstance();
             settingService = SettingService.GetInstance();
-
+            colorService = ColorService.GetInstance();
             userRespose = new GetUserRespose();
             settingAutoUpdateTimeRepose = new GetSettingAutoUpdateTimeRepose();
+
             HardwareButtons.BackPressed += HardwareButtons_BackPressed;
 
         }
-        
+
         /// <summary>
         /// 在应用程序由最终用户正常启动时进行调用。
         /// 当启动应用程序以打开特定的文件或显示搜索结果等操作时，
@@ -186,6 +187,13 @@ namespace Weather.App
                 await FileHelper.CreateFileAsync("User\\UserCities.json");
 
             }
+            bool x2 = await FileHelper.IsExistFileAsync("Color\\ColorConfig.json");
+            if (!x2)
+            {
+                string strColorConfig = colorService.GetColorJson();
+                await FileHelper.CreateAndWriteFileAsync("Color\\ColorConfig.json", strColorConfig);
+            }
+
         }
         #endregion
 

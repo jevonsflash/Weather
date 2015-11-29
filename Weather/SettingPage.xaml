@@ -9,6 +9,7 @@
 	mc:Ignorable="d">
 
     <Page.Resources>
+        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
         <converters:StringToColorConverter x:Key="StringToColorConverter"/>
         <converters:TimePickerToTimeSpanConverter x:Key="TimePickerToTimeSpanConverter" />
     </Page.Resources>
@@ -47,7 +48,6 @@
                         <TextBlock FontSize="32">心情</TextBlock>
                         <ListView x:Name="LVMood" 
                                   Margin="0,20" 
-                                  SelectionMode="None" 
                                   IsItemClickEnabled="True" 
                                   ItemClick="LVMood_ItemClick" 
                                   ItemsSource="{Binding}"
@@ -60,11 +60,16 @@
                                             <RowDefinition Height="Auto"></RowDefinition>
                                             <RowDefinition Height="Auto"></RowDefinition>
                                         </Grid.RowDefinitions>
-                                        <ItemsControl Grid.Row="0" ItemsSource="{Binding SingleColors}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <ItemsControl Grid.Column="0" Grid.Row="0" ItemsSource="{Binding SingleColors}">
                                             <!--使用ItemsStackPanel控件作为ItemsControl的布局面板-->
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
-                                                    <ItemsStackPanel Orientation="Horizontal"/>
+                                                        <ItemsStackPanel Orientation="Horizontal"/>
+                                                   
                                                 </ItemsPanelTemplate>
                                             </ItemsControl.ItemsPanel>
                                             <ItemsControl.Template>
@@ -82,8 +87,8 @@
                                             </ItemsControl.ItemTemplate>
 
                                         </ItemsControl>
-                                        <TextBlock  Margin="10,0" Grid.Row="1">性情不错</TextBlock>
-                                        <TextBlock Text="{Binding isSelected}"  Margin="10,0" Grid.Row="2"></TextBlock>
+                                        <TextBlock  Margin="10,0" Grid.Row="1" Grid.Column="0">性情不错</TextBlock>
+                                        <Image Grid.Column="1" Grid.RowSpan="2" Visibility="{Binding isSelected, Converter={StaticResource StringToVisibilityConverter}}" Source="Images/Check.png"></Image>
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>

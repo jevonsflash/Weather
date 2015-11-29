@@ -37,7 +37,7 @@
                         <TextBlock Grid.Column="2" Text="{Binding Tmp}" FontSize="42" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         <StackPanel Grid.Column="3" VerticalAlignment="Bottom" Margin="0,0,0,8">
                             <TextBlock  Text="{Binding Wind}" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center"  />
-                            <TextBlock Foreground="Gray"  FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"  >
+                            <TextBlock Foreground="LightGray"  FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"  >
                             湿度<Run  Text="{Binding Hum}"></Run>
                             </TextBlock>
                         </StackPanel>

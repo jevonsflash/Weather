@@ -71,10 +71,6 @@ namespace Weather.App
             colorResponse = new GetColorRespose();
             homePageModel = new HomePageModel();
 
-            _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMinutes(5);
-            _timer.Tick += _timer_Tick;
-            _timer.Start();
 
             this.InitializeComponent();
             Loaded += MainPage_Loaded;
@@ -82,7 +78,7 @@ namespace Weather.App
 
         private void _timer_Tick(object sender, object e)
         {
-            int timeSection = TimeHelper.GetNowSection();
+            int timeSection = TimeHelper.GetNowSectionByWeight();
             if (timeSection != CurrentTimeSection)
             {
                 ChangeBgColor(timeSection);
@@ -92,16 +88,8 @@ namespace Weather.App
         }
 
 
-        private async void MainPage_Loaded(object sender, RoutedEventArgs e)
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            colorResponse = await colorService.GetColorAsync();
-
-            int timeSection = TimeHelper.GetNowSection();
-            if (timeSection != CurrentTimeSection)
-            {
-                ChangeBgColor(timeSection);
-
-            }
 
             this.TBClock.DataContext = new ClockViewModel();
         }
@@ -140,6 +128,8 @@ namespace Weather.App
         /// 无法取消导航请求的事件处理程序。</param>
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            colorResponse = new GetColorRespose();
+
             StatusBar sb = StatusBar.GetForCurrentView();
             await sb.HideAsync();
 
@@ -164,6 +154,14 @@ namespace Weather.App
                 weatherTypeRespose = await weatherService.GetWeatherTypeAsync();
                 await GetWeather(cityId, 0);
             }
+            colorResponse = await colorService.GetColorAsync();
+            int timeSection = TimeHelper.GetNowSectionByWeight();
+            ChangeBgColor(timeSection);
+
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMinutes(1);
+            _timer.Tick += _timer_Tick;
+            _timer.Start();
 
 
         }
@@ -364,9 +362,10 @@ namespace Weather.App
         /// <param name="timeSection">当前时间段</param>
         private void ChangeBgColor(int timeSection)
         {
+
             string colorStr = colorResponse.UserColors.FirstOrDefault(c => c.isSelected == "1").SingleColors[timeSection - 1].colorStr;
             Color bgColor = Utils.ColorHelper.GetColorFromHEX(colorStr);
-            this.bgColorAnimation.To = Colors.Brown;
+            this.bgColorAnimation.To = bgColor;
             bgStoryboard.Begin();
         }
 

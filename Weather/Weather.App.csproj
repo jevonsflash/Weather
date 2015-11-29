@@ -96,6 +96,7 @@
     <Compile Include="Common\StyleSelector.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="Convert\StringToColorConverter.cs" />
+    <Compile Include="Convert\StringToVisibilityConverter.cs" />
     <Compile Include="Convert\TimePickerToTimeSpanConverter.cs" />
     <Compile Include="FeatureWeatherPage.xaml.cs">
       <DependentUpon>FeatureWeatherPage.xaml</DependentUpon>
@@ -188,11 +189,13 @@
     <Content Include="Images\Background\13.jpg" />
     <Content Include="Images\Background\14.jpg" />
     <Content Include="Images\Background\15.jpg" />
+    <Content Include="Images\Check.png" />
     <Content Include="Images\custom_pressure.png" />
     <Content Include="Images\custom_visibility.png" />
     <Content Include="Images\custom_wet.png" />
     <Content Include="Images\custom_wind.png" />
     <Content Include="Images\Other\gaosi.png" />
+    <Content Include="Images\Setting.png" />
     <Content Include="Images\TileSquare\00.png" />
     <Content Include="Images\TileSquare\01.png" />
     <Content Include="Images\TileSquare\02.png" />
@@ -255,6 +258,7 @@
     <Content Include="Images\TileWide\53.png" />
     <Content Include="Images\TileWide\900.png" />
     <Content Include="Images\TileWide\901.png" />
+    <Content Include="Images\Today.png" />
     <Content Include="Images\Today\00.png" />
     <Content Include="Images\Today\01.png" />
     <Content Include="Images\Today\02.png" />
@@ -280,6 +284,7 @@
     <Content Include="Images\Today\53.png" />
     <Content Include="Images\Today\900.png" />
     <Content Include="Images\Today\901.png" />
+    <Content Include="Images\Tomorrow.png" />
     <Content Include="Images\Tomorrow\00.png" />
     <Content Include="Images\Tomorrow\01.png" />
     <Content Include="Images\Tomorrow\02.png" />

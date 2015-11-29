@@ -125,7 +125,6 @@ namespace Weather.App
             };
             colorResponse = await colorService.GetColorAsync();
             this.LVMood.DataContext = colorResponse.UserColors;
-            
             this.LayoutRoot.DataContext = null;
             this.LayoutRoot.DataContext = settingPage;
         }
@@ -170,8 +169,16 @@ namespace Weather.App
             Frame.Navigate(typeof(AddCityPage));
         }
 
-        private void LVMood_ItemClick(object sender, ItemClickEventArgs e)
+        private async void LVMood_ItemClick(object sender, ItemClickEventArgs e)
         {
+            Model.UserColor obj = e.ClickedItem as Model.UserColor;
+            int i = colorResponse.UserColors.IndexOf(obj);
+            colorResponse.UserColors.ForEach(c => c.isSelected = "0");
+            colorResponse.UserColors[i].isSelected = "1";
+            await colorService.SaveColor(colorResponse);
+            this.LVMood.DataContext = null;
+            this.LVMood.DataContext = colorResponse.UserColors;
+
         }
     }
 }

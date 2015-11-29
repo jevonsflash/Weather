@@ -23,6 +23,21 @@ namespace Weather.Service.Implementations
         public async Task<GetColorRespose> GetColorAsync()
         {
             GetColorRespose respose = new GetColorRespose();
+            respose = await Weather.Utils.JsonSerializeHelper.JsonDeSerializeForFileAsync<GetColorRespose>("Color\\ColorConfig.json").ConfigureAwait(false);
+            return respose;
+        }
+
+        public async Task SaveColor(GetColorRespose getColorRespose)
+        {
+            await Weather.Utils.JsonSerializeHelper.JsonSerializeForFileAsync<GetColorRespose>(getColorRespose, "Color\\ColorConfig.json").ConfigureAwait(false);
+        }
+        /// <summary>
+        /// 获取初始化颜色Json格式
+        /// </summary>
+        /// <returns></returns>
+        public  string GetColorJson()
+        {
+            GetColorRespose respose = new GetColorRespose();
             respose = new GetColorRespose()
             {
                 UserColors = new List<Model.UserColor>()
@@ -36,6 +51,8 @@ namespace Weather.Service.Implementations
                             new Model.SingleColor() {colorStr="0xF0CA4D" },
                             new Model.SingleColor() {colorStr="0xE37B40" },
                             new Model.SingleColor() {colorStr="0xDE5B49" },
+                            new Model.SingleColor() {colorStr="0x293841" },
+
                         },
                         isSelected ="1"
                     },
@@ -48,6 +65,8 @@ namespace Weather.Service.Implementations
                             new Model.SingleColor() {colorStr="0x42A881" },
                             new Model.SingleColor() {colorStr="0x1F8784" },
                             new Model.SingleColor() {colorStr="0x00697D" },
+                            new Model.SingleColor() {colorStr="0x293841" },
+
                         },
                         isSelected ="0"
                     },
@@ -60,20 +79,15 @@ namespace Weather.Service.Implementations
                             new Model.SingleColor() {colorStr="0xDF4440" },
                             new Model.SingleColor() {colorStr="0xA42113" },
                             new Model.SingleColor() {colorStr="0x72170C" },
+                            new Model.SingleColor() {colorStr="0x293841" },
+
                         },
                         isSelected ="0"
                     }
 
                 }
             };
-            //respose = await Weather.Utils.JsonSerializeHelper.JsonDeSerializeForFileAsync<GetColorRespose>("Color\\ColorConfig.json").ConfigureAwait(false);
-            return respose;
+            return Utils.JsonSerializeHelper.JsonSerialize<GetColorRespose>(respose);
         }
-
-        public async Task SaveColor(GetColorRespose getColorRespose)
-        {
-            await Weather.Utils.JsonSerializeHelper.JsonSerializeForFileAsync<GetColorRespose>(getColorRespose, "Color\\ColorConfig.json").ConfigureAwait(false);
-        }
-
     }
 }
