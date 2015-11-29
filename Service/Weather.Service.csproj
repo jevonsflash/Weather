@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementations\CityService.cs" />
+    <Compile Include="Implementations\ColorService.cs" />
+    <Compile Include="Message\User\GetColorRespose.cs" />
     <Compile Include="Implementations\SettingService.cs" />
     <Compile Include="Implementations\UserService.cs" />
     <Compile Include="Implementations\WeatherService.cs" />

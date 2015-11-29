@@ -7,7 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <Grid x:Name="LayoutRoot">
+    <Page.Resources>
+        <Storyboard x:Name="bgStoryboard">
+            <ColorAnimation x:Name="bgColorAnimation" Duration="0:0:10" To="{Binding bgColor,Mode=OneWay}" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="LayoutRoot" d:IsOptimized="True"/>
+        </Storyboard>
+    </Page.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="Gray">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualStateGroup.Transitions>
@@ -59,7 +65,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock Text="20:12" FontSize="72" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="TBClock" Text="{Binding Time , Mode=OneWay}" FontSize="72" HorizontalAlignment="Center"/>
                 </Grid>
                 <Grid Grid.Row="1">
                     <Image Source="{Binding WeatherType.TileWidePic,Mode=OneWay}"></Image>
@@ -68,10 +74,10 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="3*" />
-                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock Text="{Binding City,Mode=OneWay}" Grid.Row="0"   Grid.Column="1"  FontSize="24" HorizontalAlignment="Left"/>
-                    <TextBlock Text="{Binding Tmp,Mode=OneWay}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="96"/>
+                    <TextBlock Text="{Binding City,Mode=OneWay}" Grid.Row="0"   Grid.Column="1"  FontSize="24" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding Tmp,Mode=OneWay}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="96" Margin="0,0,0,10"/>
+                    <TextBlock Text="{Binding Daytmp,Mode=OneWay}" Grid.Row="1" Grid.Column="1"  FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                 </Grid>
             </Grid>
 
@@ -99,26 +105,26 @@
 
             </Grid>
         </Grid>
-        <Grid x:Name="GBMore" Height="200" Margin="0,0,0,150" VerticalAlignment="Bottom" >
+        <Grid x:Name="GBMore" Height="200" Margin="15,0,15,150" VerticalAlignment="Bottom" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
                 <RowDefinition Height="50" />
                 <RowDefinition Height="50" />
                 <RowDefinition Height="50" />
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0">
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <Image Source="Images/custom_wind.png" Width="30" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Text="{Binding Wind,Mode=OneWay}" FontSize="18" VerticalAlignment="Center" Margin="40,0,0,0" HorizontalAlignment="Left"/>
             </StackPanel>
-            <StackPanel Grid.Row="1">
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <Image Source="Images/custom_pressure.png" Width="30" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Text="{Binding Aqi,Mode=OneWay}" FontSize="18" VerticalAlignment="Center" Margin="40,0,0,0" HorizontalAlignment="Left"/>
             </StackPanel>
-            <StackPanel Grid.Row="2">
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
                 <Image Source="Images/custom_visibility.png" Width="30" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Text="{Binding Vis,Mode=OneWay}" FontSize="18" VerticalAlignment="Center" Margin="40,0,0,0" HorizontalAlignment="Left"/>
             </StackPanel>
-            <StackPanel Grid.Row="3">
+            <StackPanel Grid.Row="3" Orientation="Horizontal">
                 <Image   Grid.Column="1" Source="Images/custom_wet.png" Width="30" Height="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock   Grid.Column="1"  Text="{Binding Hum,Mode=OneWay}" FontSize="18" VerticalAlignment="Center" Margin="40,0,0,0" HorizontalAlignment="Left"/>
             </StackPanel>

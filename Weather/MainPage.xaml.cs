@@ -12,12 +12,15 @@ using Weather.Utils;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Phone.UI.Input;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkID=390556 上有介绍
@@ -29,12 +32,17 @@ namespace Weather.App
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private DispatcherTimer _timer;
+        private int CurrentTimeSection = 1;
+
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
 
         private UserService userService;
         private WeatherService weatherService;
         private SettingService settingService;
+        private ColorService colorService = null;
+
         private GetUserRespose userRespose;
         private GetUserCityRespose userCityRespose;
         private GetWeatherRespose weatherRespose;
@@ -42,6 +50,7 @@ namespace Weather.App
         private GetSettingAutoUpdateTimeRepose settingAutoUpdateTimeRepose;
         private string cityId = null;
         private HomePageModel homePageModel;
+        private GetColorRespose colorResponse = null;
 
 
         public MainPage()
@@ -52,14 +61,51 @@ namespace Weather.App
             userService = UserService.GetInstance();
             weatherService = WeatherService.GetInstance();
             settingService = SettingService.GetInstance();
+            colorService = ColorService.GetInstance();
+
             userRespose = new GetUserRespose();
             userCityRespose = new GetUserCityRespose();
             weatherRespose = new GetWeatherRespose();
             weatherTypeRespose = new GetWeatherTypeRespose();
             settingAutoUpdateTimeRepose = new GetSettingAutoUpdateTimeRepose();
+            colorResponse = new GetColorRespose();
             homePageModel = new HomePageModel();
+
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMinutes(5);
+            _timer.Tick += _timer_Tick;
+            _timer.Start();
+
             this.InitializeComponent();
+            Loaded += MainPage_Loaded;
         }
+
+        private void _timer_Tick(object sender, object e)
+        {
+            int timeSection = TimeHelper.GetNowSection();
+            if (timeSection != CurrentTimeSection)
+            {
+                ChangeBgColor(timeSection);
+
+            }
+
+        }
+
+
+        private async void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            colorResponse = await colorService.GetColorAsync();
+
+            int timeSection = TimeHelper.GetNowSection();
+            if (timeSection != CurrentTimeSection)
+            {
+                ChangeBgColor(timeSection);
+
+            }
+
+            this.TBClock.DataContext = new ClockViewModel();
+        }
+
         /// <summary>
         /// 获取与此 <see cref="Page"/> 关联的 <see cref="NavigationHelper"/>。
         /// </summary>
@@ -94,6 +140,9 @@ namespace Weather.App
         /// 无法取消导航请求的事件处理程序。</param>
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            StatusBar sb = StatusBar.GetForCurrentView();
+            await sb.HideAsync();
+
             VisualStateManager.GoToState(this, "MoreHide", false);
             cityId = e.Parameter == null ? "" : e.Parameter.ToString();
             this.navigationHelper.OnNavigatedTo(e);
@@ -181,12 +230,12 @@ namespace Weather.App
                 }
                 homePageModel.City = basic.city;
                 homePageModel.Daytmp = daily_forecast.FirstOrDefault().tmp.min + "° / " + daily_forecast.FirstOrDefault().tmp.max + "°";
-                homePageModel.Hum = now.hum + " %";
+                homePageModel.Hum = "湿度:  " + now.hum + " %";
                 homePageModel.Pres = now.pres + " hPa";
                 homePageModel.Tmp = now.tmp + "°";
                 homePageModel.Txt = now.cond.txt;
                 homePageModel.Update = basic.update.loc + " 发布";
-                homePageModel.Vis = now.vis + " km";
+                homePageModel.Vis = "能见度:  " + now.vis + " km";
                 homePageModel.Wind = now.wind.dir + " " + now.wind.sc + " 级";
                 homePageModel.WeatherType = weatherTypeRespose.WeatherTypes.FirstOrDefault(x => x.Code == now.cond.code);
 
@@ -195,7 +244,7 @@ namespace Weather.App
                 {
                     DailyItem daily = new DailyItem()
                     {
-                        Date = item.date,
+                        Date = GetDateStr(item.date),
                         Image = weatherTypeRespose.WeatherTypes.FirstOrDefault(x => x.Code == item.cond.code_d).TileWidePic,
                         Tmp = item.tmp.min + "° / " + item.tmp.max + "°",
                         Txt = item.cond.txt_d
@@ -225,6 +274,32 @@ namespace Weather.App
             {
                 NotifyUser("天气数据获取失败");
             }
+        }
+
+        private string GetDateStr(string date)
+        {
+            string result = string.Empty;
+            DateTime DateOrg = DateTime.Parse(date);
+            TimeSpan span = DateOrg.Date - DateTime.Now.Date;
+            if (span == TimeSpan.Zero)
+            {
+                result = "今天";
+            }
+            else if (span == TimeSpan.FromDays(1.0))
+            {
+                result = "明天";
+
+            }
+            else if (span == TimeSpan.FromDays(2.0))
+            {
+                result = "后天";
+
+            }
+            else
+            {
+                result = DateOrg.ToString("MM 月 dd 日");
+            }
+            return result;
         }
 
         private void NotifyUser(string v)
@@ -282,6 +357,18 @@ namespace Weather.App
             }
         }
         #endregion
+
+        /// <summary>
+        /// 更改主页背景颜色
+        /// </summary>
+        /// <param name="timeSection">当前时间段</param>
+        private void ChangeBgColor(int timeSection)
+        {
+            string colorStr = colorResponse.UserColors.FirstOrDefault(c => c.isSelected == "1").SingleColors[timeSection - 1].colorStr;
+            Color bgColor = Utils.ColorHelper.GetColorFromHEX(colorStr);
+            this.bgColorAnimation.To = Colors.Brown;
+            bgStoryboard.Begin();
+        }
 
         private void BTNShowMore_Click(object sender, RoutedEventArgs e)
         {

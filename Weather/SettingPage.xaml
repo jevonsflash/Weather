@@ -9,13 +9,14 @@
 	mc:Ignorable="d">
 
     <Page.Resources>
+        <converters:StringToColorConverter x:Key="StringToColorConverter"/>
         <converters:TimePickerToTimeSpanConverter x:Key="TimePickerToTimeSpanConverter" />
     </Page.Resources>
 
 
     <Grid x:Name="LayoutRoot">
         <Grid.Background>
-            <ImageBrush Stretch="UniformToFill" ImageSource="Images/Other/gaosi.jpg"/>
+            <ImageBrush Stretch="UniformToFill" ImageSource="Images/Other/gaosi.png"/>
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -26,10 +27,11 @@
                 <TextBlock x:Name="StatusBlock" Foreground="White" FontSize="20"  Margin="15, 10, 15, 10" TextWrapping="Wrap"/>
             </Border>
         </Popup>
-        <Pivot Grid.Row="1" x:Name="SettingPivot" Title="番茄天气">
+        <Pivot Grid.Row="1" x:Name="SettingPivot" Title="">
             <!--枢轴项一-->
             <PivotItem
-				Margin="15,10"
+                x:Name="GenSetting"
+				Margin="16,10"
 				Header="常规" CommonNavigationTransitionInfo.IsStaggerElement="True">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -37,16 +39,61 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0">
+                    <StackPanel Grid.Row="0" Margin="0,10">
                         <TextBlock FontSize="32">城市</TextBlock>
-                        <Button x:Name="BTNCityChoose" Click="BTNCityChoose_Click"></Button>
+                        <Button x:Name="BTNCityChoose" Click="BTNCityChoose_Click" HorizontalAlignment="Center" BorderThickness="0">请选择你所在的城市</Button>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Margin="0,10">
+                        <TextBlock FontSize="32">心情</TextBlock>
+                        <ListView x:Name="LVMood" 
+                                  Margin="0,20" 
+                                  SelectionMode="None" 
+                                  IsItemClickEnabled="True" 
+                                  ItemClick="LVMood_ItemClick" 
+                                  ItemsSource="{Binding}"
+                                  >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Width="{Binding ElementName=GenSetting, Path=ActualWidth}" Margin="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <ItemsControl Grid.Row="0" ItemsSource="{Binding SingleColors}">
+                                            <!--使用ItemsStackPanel控件作为ItemsControl的布局面板-->
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <ItemsStackPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.Template>
+                                                <ControlTemplate TargetType="ItemsControl">
+                                                    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto"  
+                                                                      ScrollViewer.VerticalScrollBarVisibility ="Disabled">
+                                                        <ItemsPresenter/>
+                                                    </ScrollViewer>
+                                                </ControlTemplate>
+                                            </ItemsControl.Template>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Rectangle Fill="{Binding colorStr, Converter={StaticResource StringToColorConverter}}" Height="50" Width="50"></Rectangle>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
 
+                                        </ItemsControl>
+                                        <TextBlock  Margin="10,0" Grid.Row="1">性情不错</TextBlock>
+                                        <TextBlock Text="{Binding isSelected}"  Margin="10,0" Grid.Row="2"></TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </StackPanel>
                 </Grid>
             </PivotItem>
             <PivotItem
 				x:Name="SecondPivot"
-				Margin="15,10"
+				Margin="16,10"
 				Header="其它" CommonNavigationTransitionInfo.IsStaggerElement="True">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,15">
@@ -62,7 +109,7 @@
                     <StackPanel Orientation="Horizontal" Margin="0,15">
                         <TextBlock VerticalAlignment="Center" FontSize="32">仅WiFi下使用</TextBlock>
                         <ComboBox  VerticalAlignment="Center" Margin="29,0"  Width="150" Header="" x:Name="cbbIsWifiUpdate"  ItemsSource="{Binding AutoUpdateSettingPage.Switches}"  SelectedValuePath="Id"  DisplayMemberPath="Content" SelectedValue="{Binding UserConfig.IsWifiUpdate}" DropDownClosed="cbbIsWifiUpdate_DropDownClosed">
-                    </ComboBox>
+                        </ComboBox>
                     </StackPanel>
 
                 </StackPanel>

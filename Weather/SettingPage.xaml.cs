@@ -35,20 +35,23 @@ namespace Weather.App
 
         private SettingService settingService = null;
         private UserService userService = null;
+        private ColorService colorService = null;
+
         private GetSettingSwitchesRespose switchesRespose = null;
         private GetSettingAutoUpdateTimeRepose autoUpdateTimeRepose = null;
         private GetUserRespose userRespose = null;
-
+        private GetColorRespose colorResponse = null;
         public SettingPage()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             settingService = SettingService.GetInstance();
             userService = UserService.GetInstance();
+            colorService = ColorService.GetInstance();
             switchesRespose = new GetSettingSwitchesRespose();
             autoUpdateTimeRepose = new GetSettingAutoUpdateTimeRepose();
             userRespose = new GetUserRespose();
-
+            colorResponse = new GetColorRespose();
         }
 
         /// <summary>
@@ -120,8 +123,11 @@ namespace Weather.App
                 UserConfig = userRespose.UserConfig
 
             };
-            LayoutRoot.DataContext = null;
-            LayoutRoot.DataContext = settingPage;
+            colorResponse = await colorService.GetColorAsync();
+            this.LVMood.DataContext = colorResponse.UserColors;
+            
+            this.LayoutRoot.DataContext = null;
+            this.LayoutRoot.DataContext = settingPage;
         }
 
 
@@ -162,6 +168,10 @@ namespace Weather.App
         private void BTNCityChoose_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(AddCityPage));
+        }
+
+        private void LVMood_ItemClick(object sender, ItemClickEventArgs e)
+        {
         }
     }
 }

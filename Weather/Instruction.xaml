@@ -10,7 +10,7 @@
 
     <Grid x:Name="LayoutRoot">
         <Grid.Background>
-            <ImageBrush Stretch="UniformToFill" ImageSource="Images/Other/gaosi.jpg"/>
+            <ImageBrush Stretch="UniformToFill" ImageSource="Images/Other/gaosi.png"/>
         </Grid.Background>
         <Grid.ChildrenTransitions>
             <TransitionCollection>

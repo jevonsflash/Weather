@@ -9,25 +9,38 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid.Background>
+            <ImageBrush Stretch="UniformToFill" ImageSource="Images/Other/gaosi.png"/>
+        </Grid.Background>
+
         <ListView
-				x:Name="LVToday"	ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Hidden" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+			x:Name="LVToday"
+            ItemsSource="{Binding}"
+            IsItemClickEnabled="False"
+            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+            HorizontalContentAlignment="Stretch"
+            ScrollViewer.HorizontalScrollBarVisibility="Hidden">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid HorizontalAlignment="Stretch" >
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                    <Grid HorizontalAlignment="Stretch" Height="100">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="30"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="1.5*"/>
-                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="1" Text="{Binding Date}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,40"/>
-                        <TextBlock Grid.Column="2" Text="{Binding Tmp}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,40"/>
-                        <TextBlock Grid.Column="3" Text="{Binding Wind}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="0,0,0,40"/>
-                        <TextBlock Grid.Column="4" Text="{Binding Hum}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"  Margin="0,0,0,40"/>
+                        <StackPanel HorizontalAlignment="Center">
+                            <Line Stroke="Gray" StrokeThickness="3" X2="0" Y1="0" X1="0" Y2="100"/>
+                        </StackPanel>
+                        <Ellipse Grid.Column="0" Height="15" Width="15" Fill="White"></Ellipse>
+                        <TextBlock Grid.Column="1"  Text="{Binding Date}" FontSize="42" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="2" Text="{Binding Tmp}" FontSize="42" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="3" VerticalAlignment="Bottom" Margin="0,0,0,8">
+                            <TextBlock  Text="{Binding Wind}" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center"  />
+                            <TextBlock Foreground="Gray"  FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"  >
+                            湿度<Run  Text="{Binding Hum}"></Run>
+                            </TextBlock>
+                        </StackPanel>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -37,6 +50,5 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-
     </Grid>
 </Page>

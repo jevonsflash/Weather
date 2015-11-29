@@ -42,5 +42,17 @@ namespace Weather.App
             homePageModel = e.Parameter as HomePageModel;
             this.LVFeature.ItemsSource = homePageModel.DailyList;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
+            else
+            {
+                Frame.Navigate(typeof(MainPage));
+            }
+        }
     }
 }
