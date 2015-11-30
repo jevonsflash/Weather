@@ -14,7 +14,7 @@ namespace Weather.Service.Message
 
         #region Field
 
-        private string _key = "f65dfbde990c433da6a56feda554d759";
+        private string _key = "c506e27d063345d4800889da480323b4";
 
         /// <summary>
         /// ip地址

@@ -295,7 +295,7 @@ namespace Weather.App
             }
             else
             {
-                result = DateOrg.ToString("MM 月 dd 日");
+                result = DateOrg.ToString("MM月dd日");
             }
             return result;
         }
