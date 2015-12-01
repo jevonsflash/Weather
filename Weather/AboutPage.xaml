@@ -1,0 +1,173 @@
+﻿<Page 
+    xmlns:MyUserControl="using:Weather.MyUserControl"   
+    x:Class="Weather.App.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Weather.App"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="25"></Setter>
+        </Style>
+        <Style TargetType="RichTextBlock">
+            <Setter Property="FontSize" Value="21"></Setter>
+            <Setter Property="Margin" Value="7.5"></Setter>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <Grid x:Name="LayoutRoot" Background="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!--TitlePanel 包含应用程序的名称和页标题-->
+            <StackPanel Grid.Row="0" Margin="12,17,0,28">
+                <TextBlock Text="关于" Margin="9,-7,0,0" Style="{StaticResource TitleTextBlockStyle}"/>
+            </StackPanel>
+
+            <!--ContentPanel - 在此处放置其他内容-->
+            <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+                <ScrollViewer>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition x:Name="Row0Logo" Height="120"></RowDefinition>
+                            <RowDefinition x:Name="Row1" Height="1*"></RowDefinition>
+                            <RowDefinition x:Name="Row2Title" Height="55"></RowDefinition>
+                            <RowDefinition x:Name="Row3" Height="1*"></RowDefinition>
+                            <RowDefinition x:Name="Row4Title" Height="55"></RowDefinition>
+                            <RowDefinition x:Name="Row5" Height="1*"></RowDefinition>
+                            <RowDefinition x:Name="Row6"></RowDefinition>
+                            <RowDefinition x:Name="Row7Title" Height="55"></RowDefinition>
+                            <RowDefinition x:Name="Row8" Height="1*"></RowDefinition>
+                            <RowDefinition x:Name="Row9Title" Height="55"></RowDefinition>
+                            <RowDefinition x:Name="Row10" Height="1*"></RowDefinition>
+                            <RowDefinition x:Name="Row11" Height="1*"></RowDefinition>
+                            <RowDefinition x:Name="Row12" Height="1*"></RowDefinition>
+                            <RowDefinition x:Name="Row13" Height="1*"></RowDefinition>
+                            <RowDefinition x:Name="Row14" Height="1*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Image Grid.Row="0" Source="Assets/Logo.png"></Image>
+                        <StackPanel Grid.Row="1">
+                            <TextBlock  HorizontalAlignment="Center" FontSize="21">
+                            心情天气 -  版本<Run x:Name="TBVersion" Text="{Binding Version,Mode=OneWay}"></Run>
+                            </TextBlock>
+                            <TextBlock HorizontalAlignment="Center" FontSize="21">
+                            Design &amp; Code By LinXiao &#169; 2015
+                            </TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Height="55" Background="{StaticResource PhoneChromeBrush}">
+                            <TextBlock  Text="说明 &amp; 感谢"  Margin="9,15,0,0"/>
+                        </StackPanel>
+                        <RichTextBlock Grid.Row="3">
+                            <RichTextBlock.Blocks>
+                                <Paragraph TextIndent="20">
+                                    MVVMLight Toolkit
+                                </Paragraph>
+                                <Paragraph FontStretch="Undefined" TextIndent="20">
+                                    Metro Studio
+                                    <LineBreak/>
+                                </Paragraph>
+                                <Paragraph FontStretch="Undefined" TextIndent="20">
+                                    感谢给予帮助的人和站点
+                                    <LineBreak/>
+                                </Paragraph>
+                                <Paragraph FontStretch="Undefined" FontSize="15" TextIndent="20">
+                                    此应用数据来源于 和风天气(www.heweather.com)
+                                    <LineBreak></LineBreak>
+                                    应用数据对于用户造成的任何影响与本应用无关。
+                                </Paragraph>
+                            </RichTextBlock.Blocks>
+                        </RichTextBlock>
+
+                        <StackPanel Grid.Row="4" Height="55" Background="{StaticResource PhoneChromeBrush}">
+                            <TextBlock  Text="关于" Margin="9,15,0,0"/>
+                        </StackPanel>
+                        <StackPanel  Grid.Row="5" >
+                            <RichTextBlock>
+                                <RichTextBlock.Blocks>
+                                    <Paragraph >首先感谢下载并体验，祝您有个好心情
+                                    </Paragraph>
+                                    <Paragraph>新版
+                                        <Run x:Name="TBVersion2" Text="{Binding Version,Mode=OneWay}"></Run> 更新内容：
+                                    </Paragraph>
+                                </RichTextBlock.Blocks>
+                            </RichTextBlock>
+                            <MyUserControl:SimpleItemsControl ItemsSource="{Binding StrUpdate,Mode=OneWay}">
+                                <MyUserControl:SimpleItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" FontSize="21" Margin="7.5"></TextBlock>
+                                    </DataTemplate>
+                                </MyUserControl:SimpleItemsControl.ItemTemplate>
+                            </MyUserControl:SimpleItemsControl>
+                            <RichTextBlock>
+                                <RichTextBlock.Blocks>
+                                    <Paragraph TextIndent="20">
+                                        心情天气——免费中文天气APP，
+                                        一款真正经过用户调查的APP，满足您对于简洁呈现，快捷预报的需求。
+                                        一款心中的天气APP，随心选择背景色彩，卡片式的7天天气预报。
+                                        支持热门城市选择，更新模式设定等功能。
+                                        知冷暖，报晴雨，尽在心情天气。
+                                        <LineBreak/>
+                                    </Paragraph>
+
+                                    <Paragraph FontStretch="Undefined" TextIndent="20">
+
+                                        如果您在使用的过程中有疑问，可以参考下面的使用帮助，也可以发送邮件给我。
+                                    邮件链接在【意见反馈】一栏。
+                                    </Paragraph>
+                                </RichTextBlock.Blocks>
+                            </RichTextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Row="7" Height="55" Background="{StaticResource PhoneChromeBrush}">
+                            <TextBlock  Text="意见反馈" Margin="9,15,0,0"/>
+                        </StackPanel>
+                        <RichTextBlock Grid.Row="8">
+                            <RichTextBlock.Blocks>
+                                <Paragraph >如果您觉得心情天气不错，请支持我！
+                                </Paragraph>
+                            </RichTextBlock.Blocks>
+                        </RichTextBlock>
+                        <Button x:Name="BTNLove" Command="{Binding GoLoveCommand}" Grid.Row="9">
+                            亲，给个好评吧
+                        </Button>
+                        <RichTextBlock Grid.Row="10" >
+                            <RichTextBlock.Blocks>
+                                <Paragraph>同样，我非常期待您的意见和建议。请将要反馈的内容发送到以下地址，对于每一条建议我都会认真回复：
+                                    <LineBreak></LineBreak>
+                                    <InlineUIContainer>
+                                        <HyperlinkButton x:Name="BTNMail"  Command="{Binding GoMailCommand}" Content="jevons@hotmail.com" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                    </InlineUIContainer>
+                                    <LineBreak></LineBreak>
+                                    也可以关注我的新浪微博：
+                                    <LineBreak></LineBreak>
+                                    <InlineUIContainer>
+                                        <HyperlinkButton x:Name="BTNWeibo"  Command="{Binding GoWeiboCommand}" Content="@siuxing_小圣" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                    </InlineUIContainer>
+                                </Paragraph>
+                            </RichTextBlock.Blocks>
+                        </RichTextBlock>
+                        <StackPanel Grid.Row="11" Height="55" Background="{StaticResource PhoneChromeBrush}">
+                            <TextBlock  Text="使用帮助" Margin="9,15,0,0"/>
+                        </StackPanel>
+                        <RichTextBlock Grid.Row="12" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Paragraph FontStretch="Undefined" TextIndent="20">
+                                1.心情天气只需要联网就能获取天气，无需开启GPS功能。
+                            </Paragraph>
+                            <Paragraph FontStretch="Undefined" TextIndent="20">
+                                2.心情天气不获取用户任何资料，只提供天气数据。
+                            </Paragraph>
+                            <Paragraph FontStretch="Undefined" TextIndent="20">
+                                3.当您进行联网更新数据时，会将天气数据存储于本地。当在无网络情况下，会使用本地数据，加载为期三天的天气数据，但这些数据只是参考数据，天气可能这三天内会发生剧烈变化，所以建议开启网络实时更新。
+                            </Paragraph>
+                        </RichTextBlock>
+
+                    </Grid>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

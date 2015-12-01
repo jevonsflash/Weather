@@ -35,7 +35,7 @@ namespace Weather.Service.Implementations
         /// 获取初始化颜色Json格式
         /// </summary>
         /// <returns></returns>
-        public  string GetColorJson()
+        public string GetColorJson()
         {
             GetColorRespose respose = new GetColorRespose();
             respose = new GetColorRespose()
@@ -54,37 +54,54 @@ namespace Weather.Service.Implementations
                             new Model.SingleColor() {colorStr="0x293841" },
 
                         },
-                        isSelected ="1"
+                        isSelected ="1",
+                        Title="标准心情"
                     },
                     new Model.UserColor()
                     {
                         SingleColors =new List<Model.SingleColor>()
                         {
-                            new Model.SingleColor() {colorStr="0x98FF72" },
-                            new Model.SingleColor() {colorStr="0x65D97D" },
-                            new Model.SingleColor() {colorStr="0x42A881" },
-                            new Model.SingleColor() {colorStr="0x1F8784" },
-                            new Model.SingleColor() {colorStr="0x00697D" },
+                            new Model.SingleColor() {colorStr="0xFF91BD" },
+                            new Model.SingleColor() {colorStr="0x8793E8" },
+                            new Model.SingleColor() {colorStr="0x99FFC5" },
+                            new Model.SingleColor() {colorStr="0xE8DE7F" },
+                            new Model.SingleColor() {colorStr="0xFFAB8C" },
                             new Model.SingleColor() {colorStr="0x293841" },
 
                         },
-                        isSelected ="0"
+                        isSelected ="0",
+                        Title="清新花季"
                     },
                     new Model.UserColor()
                     {
                         SingleColors =new List<Model.SingleColor>()
                         {
-                            new Model.SingleColor() {colorStr="0x2E4497" },
-                            new Model.SingleColor() {colorStr="0x865D98" },
-                            new Model.SingleColor() {colorStr="0xDF4440" },
-                            new Model.SingleColor() {colorStr="0xA42113" },
-                            new Model.SingleColor() {colorStr="0x72170C" },
+                            new Model.SingleColor() {colorStr="0x442D65" },
+                            new Model.SingleColor() {colorStr="0x775BA3" },
+                            new Model.SingleColor() {colorStr="0x91C5A9" },
+                            new Model.SingleColor() {colorStr="0xF8E1B4" },
+                            new Model.SingleColor() {colorStr="0xF98A5F" },
                             new Model.SingleColor() {colorStr="0x293841" },
 
                         },
-                        isSelected ="0"
-                    }
+                        isSelected ="0",
+                        Title="哥德情怀"
+                    },
+                    new Model.UserColor()
+                    {
+                        SingleColors =new List<Model.SingleColor>()
+                        {
+                            new Model.SingleColor() {colorStr="0x169CF4" },
+                            new Model.SingleColor() {colorStr="0x23A60A" },
+                            new Model.SingleColor() {colorStr="0xD88F09" },
+                            new Model.SingleColor() {colorStr="0xF0620B" },
+                            new Model.SingleColor() {colorStr="0xF3302F" },
+                            new Model.SingleColor() {colorStr="0x293841" },
 
+                        },
+                        isSelected ="0",
+                        Title="浓郁夏午"
+                    },
                 }
             };
             return Utils.JsonSerializeHelper.JsonSerialize<GetColorRespose>(respose);

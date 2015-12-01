@@ -150,19 +150,28 @@ namespace Weather.App
                 {
                     cityId = userCityRespose.UserCities.FirstOrDefault().CityId;
                 }
-                userRespose = await userService.GetUserAsync();
-                weatherTypeRespose = await weatherService.GetWeatherTypeAsync();
-                await GetWeather(cityId, 0);
+                try
+                {
+                    userRespose = await userService.GetUserAsync();
+                    weatherTypeRespose = await weatherService.GetWeatherTypeAsync();
+                    await GetWeather(cityId, 0);
+
+                    colorResponse = await colorService.GetColorAsync();
+                    int timeSection = TimeHelper.GetNowSectionByWeight();
+                    ChangeBgColor(timeSection);
+
+
+                }
+                catch (Exception)
+                {
+
+
+                }
+                _timer = new DispatcherTimer();
+                _timer.Interval = TimeSpan.FromMinutes(1);
+                _timer.Tick += _timer_Tick;
+                _timer.Start();
             }
-            colorResponse = await colorService.GetColorAsync();
-            int timeSection = TimeHelper.GetNowSectionByWeight();
-            ChangeBgColor(timeSection);
-
-            _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMinutes(1);
-            _timer.Tick += _timer_Tick;
-            _timer.Start();
-
 
         }
 
@@ -277,25 +286,37 @@ namespace Weather.App
         private string GetDateStr(string date)
         {
             string result = string.Empty;
-            DateTime DateOrg = DateTime.Parse(date);
-            TimeSpan span = DateOrg.Date - DateTime.Now.Date;
-            if (span == TimeSpan.Zero)
+            if (!string.IsNullOrEmpty(date))
             {
-                result = "今天";
-            }
-            else if (span == TimeSpan.FromDays(1.0))
-            {
-                result = "明天";
+                DateTime DateOrg;
 
-            }
-            else if (span == TimeSpan.FromDays(2.0))
-            {
-                result = "后天";
+                if (DateTime.TryParse(date, out DateOrg))
+                {
+                    TimeSpan span = DateOrg.Date - DateTime.Now.Date;
+                    if (span == TimeSpan.Zero)
+                    {
+                        result = "今天";
+                    }
+                    else if (span == TimeSpan.FromDays(1.0))
+                    {
+                        result = "明天";
 
-            }
-            else
-            {
-                result = DateOrg.ToString("MM月dd日");
+                    }
+                    else if (span == TimeSpan.FromDays(2.0))
+                    {
+                        result = "后天";
+
+                    }
+                    else
+                    {
+                        result = DateOrg.ToString("MM月dd日");
+                    }
+                }
+                else
+                {
+                    result = DateOrg.ToString("MM月dd日");
+
+                }
             }
             return result;
         }
@@ -309,29 +330,38 @@ namespace Weather.App
         private async Task<GetWeatherRespose> GetWeatherAsync(int isRefresh, Model.UserCity userCity, IGetWeatherRequest weatherRequest)
         {
             GetWeatherRespose weatherRespose = new GetWeatherRespose();
-
-            if (isRefresh == 1)
+            try
             {
-                weatherRespose = await weatherService.GetWeatherAsync(weatherRequest);
-                await weatherService.SaveWeather(weatherRespose, userCity.CityId.ToString());
-            }
-            else
-            {
-                string filePath = StringHelper.GetTodayFilePath(userCity.CityId);
 
-                if (!await FileHelper.IsExistFileAsync(filePath))
+                if (isRefresh == 1)
                 {
-                    //不存在当天的天气数据，就从网络获取数据
                     weatherRespose = await weatherService.GetWeatherAsync(weatherRequest);
-                    await DeleteFile(userCity.CityId);
                     await weatherService.SaveWeather(weatherRespose, userCity.CityId.ToString());
                 }
                 else
                 {
-                    weatherRespose = await weatherService.GetWeatherByClientAsync(userCity.CityId.ToString());
+                    string filePath = StringHelper.GetTodayFilePath(userCity.CityId);
+
+                    if (!await FileHelper.IsExistFileAsync(filePath))
+                    {
+                        //不存在当天的天气数据，就从网络获取数据
+                        weatherRespose = await weatherService.GetWeatherAsync(weatherRequest);
+                        await DeleteFile(userCity.CityId);
+                        await weatherService.SaveWeather(weatherRespose, userCity.CityId.ToString());
+                    }
+                    else
+                    {
+                        weatherRespose = await weatherService.GetWeatherByClientAsync(userCity.CityId.ToString());
+                    }
                 }
+                return weatherRespose;
             }
-            return weatherRespose;
+            catch (Exception)
+            {
+
+                return weatherRespose;
+            }
+
         }
 
 
@@ -396,6 +426,12 @@ namespace Weather.App
         private void BTNSetting_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(SettingPage), homePageModel);
+
+        }
+
+        private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(AboutPage));
 
         }
     }

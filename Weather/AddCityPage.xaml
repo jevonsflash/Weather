@@ -23,7 +23,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!-- 标题面板 -->
-        <StackPanel Grid.Row="1" Margin="15,0,0,0">
+        <StackPanel Grid.Row="1" Margin="15,15,0,0">
             <TextBlock Text="城市选择" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
         </StackPanel>
 

@@ -87,7 +87,7 @@
                                             </ItemsControl.ItemTemplate>
 
                                         </ItemsControl>
-                                        <TextBlock  Margin="10,0" Grid.Row="1" Grid.Column="0">性情不错</TextBlock>
+                                        <TextBlock  Margin="10,0" Grid.Row="1" Grid.Column="0" Text="{Binding Title,Mode=OneWay }"></TextBlock>
                                         <Image Grid.Column="1" Grid.RowSpan="2" Visibility="{Binding isSelected, Converter={StaticResource StringToVisibilityConverter}}" Source="Images/Check.png"></Image>
                                     </Grid>
                                 </DataTemplate>

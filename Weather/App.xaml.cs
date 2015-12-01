@@ -47,6 +47,7 @@ namespace Weather.App
         /// </summary>
         public App()
         {
+            this.RequestedTheme = ApplicationTheme.Dark;
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
 

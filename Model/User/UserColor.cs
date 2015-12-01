@@ -8,6 +8,7 @@ namespace Weather.Model
 {
     public class UserColor
     {
+        public string Title { get; set; }
         public string isSelected { get; set; }
         public List<SingleColor> SingleColors { get; set; }
     }
